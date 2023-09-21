@@ -1,0 +1,65 @@
+#region VEXcode Generated Robot Configuration
+from vex import *
+import urandom
+
+# Brain should be defined by default
+brain=Brain()
+
+# Robot configuration code
+inertial_2 = Inertial(Ports.PORT2)
+# vex-vision-config:begin
+vision_1 = Vision(Ports.PORT1, 50)
+# vex-vision-config:end
+controller_1 = Controller(PRIMARY)
+left_motor_a = Motor(Ports.PORT3, GearSetting.RATIO_18_1, False)
+left_motor_b = Motor(Ports.PORT5, GearSetting.RATIO_18_1, False)
+left_drive_smart = MotorGroup(left_motor_a, left_motor_b)
+right_motor_a = Motor(Ports.PORT4, GearSetting.RATIO_18_1, True)
+right_motor_b = Motor(Ports.PORT6, GearSetting.RATIO_18_1, True)
+right_drive_smart = MotorGroup(right_motor_a, right_motor_b)
+drivetrain = DriveTrain(left_drive_smart, right_drive_smart, 319.19, 295, 40, MM, 1)
+intake = Motor(Ports.PORT7, GearSetting.RATIO_18_1, False)
+
+
+# wait for rotation sensor to fully initialize
+wait(30, MSEC)
+
+
+def play_vexcode_sound(sound_name):
+    # Helper to make playing sounds from the V5 in VEXcode easier and
+    # keeps the code cleaner by making it clear what is happening.
+    print("VEXPlaySound:" + sound_name)
+    wait(5, MSEC)
+
+# add a small delay to make sure we don't print in the middle of the REPL header
+wait(200, MSEC)
+# clear the console to make sure we don't have the REPL in the console
+print("\033[2J")
+
+#endregion VEXcode Generated Robot Configuration
+
+# ------------------------------------------
+# 
+# 	Project:      VEXcode Project
+#	Author:       VEX
+#	Created:
+#	Description:  VEXcode V5 Python Project
+# 
+# ------------------------------------------
+
+# Library imports
+from vex import *
+def vis():
+    vision_object = vision.take_snapshot(signature)
+    if vision_object == SIG_1:
+        drivetrain.set_turn_velocity(0, PERCENT)
+        drivetrain.drive(FORWARD)
+        intake.spin(FORWARD)
+    if not vision_object == SIG_1:
+        drivetrain.set_turn_velocity(100, PERCENT)
+        drivetrain.turn(RIGHT)
+
+
+while controller_1.buttonA.pressed(vis):
+    vis():
+# Begin project code
